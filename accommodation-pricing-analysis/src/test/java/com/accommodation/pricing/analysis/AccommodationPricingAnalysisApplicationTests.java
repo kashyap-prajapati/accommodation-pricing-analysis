@@ -1,0 +1,13 @@
+package com.accommodation.pricing.analysis;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class AccommodationPricingAnalysisApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
