@@ -45,3 +45,12 @@ searched.
 - 	Email notification for the best deal – Samiksha Arora
 - 	Currency conversion  - Sachreet Kaur
 - 	Map integration – Kashyap Prajapati
+
+# Code commit
+```bash
+git clone 'URL';
+git pull origin main
+git add . 
+git commit -m 'msg'
+git push origin main
+```
