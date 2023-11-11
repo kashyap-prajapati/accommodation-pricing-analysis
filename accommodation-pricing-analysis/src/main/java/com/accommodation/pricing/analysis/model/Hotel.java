@@ -1,5 +1,7 @@
 package com.accommodation.pricing.analysis.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,14 +13,140 @@ public class Hotel {
 	private String price;
 	private String name;
 	private String description;
+	private String location;
+	private String address;
+	private List<String> amenities;
+	private String city;
+	private String fromDate;
+	private String toDate;
+	private String url;
+	private String reviewDescription;
+	private String score;
+	private String reviewCount;
+	private String noOfguests;
+	private String noOfRooms;
 	
-	public Hotel(String id, String price, String name, String description) {
+	public Hotel() {
+		
+	}
+	
+	public Hotel(String price, String name, String description, String location, String address, List<String> amenities,
+			String city, String fromDate, String toDate, String url, String reviewDescription, String score,
+			String reviewCount, String noOfguests, String noOfRooms) {
 		super();
-		this.id = id;
 		this.price = price;
 		this.name = name;
 		this.description = description;
+		this.location = location;
+		this.address = address;
+		this.amenities = amenities;
+		this.city = city;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.url = url;
+		this.reviewDescription = reviewDescription;
+		this.score = score;
+		this.reviewCount = reviewCount;
+		this.noOfguests = noOfguests;
+		this.noOfRooms = noOfRooms;
 	}
-	
+
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public List<String> getAmenities() {
+		return amenities;
+	}
+	public void setAmenities(List<String> amenities) {
+		this.amenities = amenities;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getReviewDescription() {
+		return reviewDescription;
+	}
+	public void setReviewDescription(String reviewDescription) {
+		this.reviewDescription = reviewDescription;
+	}
+	public String getScore() {
+		return score;
+	}
+	public void setScore(String score) {
+		this.score = score;
+	}
+	public String getReviewCount() {
+		return reviewCount;
+	}
+	public void setReviewCount(String reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+	public String getNoOfguests() {
+		return noOfguests;
+	}
+	public void setNoOfguests(String noOfguests) {
+		this.noOfguests = noOfguests;
+	}
+	public String getNoOfRooms() {
+		return noOfRooms;
+	}
+	public void setNoOfRooms(String noOfRooms) {
+		this.noOfRooms = noOfRooms;
+	}	
 	
 }

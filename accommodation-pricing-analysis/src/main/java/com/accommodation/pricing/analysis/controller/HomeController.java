@@ -29,8 +29,7 @@ public class HomeController {
 
 	@GetMapping("/index")
 	public ResponseEntity<Object> getPageHtml() throws IOException, InterruptedException{
-		
-		s.start();
+	;
 //		String connectionString = "mongodb://localhost:27017/test-admin?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false";
 //		ServerApi serverApi = ServerApi.builder()
 //                .version(ServerApiVersion.V1)
