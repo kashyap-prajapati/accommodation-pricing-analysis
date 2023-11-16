@@ -11,28 +11,28 @@ Compare deals and show the best deal to the user.
 
 # features
 
-- Web crawler;
-- Data validation using regular expressions;
-- HTML parser;
-- Inverted indexing
+- Web crawler; - Kashyap
+- Data validation using regular expressions - Sachreet
+- HTML parser; - Kashyap
+- Inverted indexing - Samiksha
 Inverted indexing lets us perform quick searches without going through all the files. This can be
 represented as an index data structure storing a mapping from content, such as words or numbers, to its
 locations in a set of documents.
-- Frequency count;
+- Frequency count; - Aditya
 Frequency count shows the user the number of occurrences of a word in a specific URL.
-- Page ranking;
+- Page ranking; - Samiksha
 Page ranking is used to measure the importance of a search result based on the number of occurrences.
 Search keywords that are repeated more within a web page will be ranked higher than the others.
 Ranking web pages can be performed using sorting, heaps, or other data structures.
-- Spell checking;
+- Spell checking - Subhram
 Spell checking can be achieved by constructing a vocabulary based on all existing words in text files.
 If you don't find any additional word suggestions, you should be provided.
 The edit distance algorithm can be used to compare the user's input with existing words from source files.
-- Word completion;
-- Search frequency;
+- Word completion - Sachreet
+- Search frequency - Aditya 
 Ability to show the word that has been searched before as well as the number of times the word has been
 searched.
-- Finding patterns using regular expressions
+- Finding patterns using regular expressions - Subhram
 
 # Milestone 1
 - 	User Authentication – Kashyap Prajapati
