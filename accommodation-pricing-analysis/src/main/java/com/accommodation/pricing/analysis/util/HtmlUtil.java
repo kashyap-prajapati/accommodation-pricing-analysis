@@ -20,6 +20,13 @@ public class HtmlUtil {
 		return document.select(selectedHref);
 	}
 	
+	public static String getFirstElementText(Document document,String selectedHref) {
+		Elements  elements = document.select(selectedHref);
+		if(elements.isEmpty())
+			return "not found";
+		return elements.first().text();
+	}
+	
 	public static Document loadDoument(String url) {
 		try {
 			return Jsoup.connect(url).get();
