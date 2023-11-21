@@ -1,5 +1,7 @@
 package com.accommodation.pricing.analysis;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
+import com.accommodation.pricing.analysis.model.Hotel;
 import com.accommodation.pricing.analysis.model.URLParams;
+import com.accommodation.pricing.analysis.repository.HotelRepository;
 import com.accommodation.pricing.analysis.script.MomondoScrapper;
 import com.accommodation.pricing.analysis.script.Scrapper;
 
@@ -21,16 +25,76 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 
 	@Autowired private Scrapper scrapper;
 	@Autowired private MomondoScrapper oneFineStayScrapper;
+	@Autowired private static HotelRepository hotelRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AccommodationPricingAnalysisApplication.class, args);
 	}
+	
+	public static void searchByKeyword() {
+		while (true) {
+			System.out.println("please select option");
+			System.out.println("|        1. Search By City                                         |");
+			
+			System.out.println("|        2. Search By Name                                            |");
+			System.out.println("|        3. Press 3 for exit                                           |");
+			
+			List<Hotel> hotelListbyCity = new ArrayList<Hotel>();
+			List<Hotel> hotelListByName = new ArrayList<Hotel>();
+			Scanner scanner = new Scanner(System.in);
+			int type = scanner.nextInt();
+			if(type == 3) {
+				break;
+			}
+			if(type == 1) {
+				System.out.println("please enter city name");
+				String city = scanner.next();
+				 hotelListbyCity= hotelRepository.getHotelByCity(city);
+				 for(Hotel hotel: hotelListbyCity ) {
+						System.out.println("|==================================================================|");
+						System.out.println("|Name :"+hotel.getName()+"|");
+						System.out.println("|Price :"+hotel.getPrice()+"|");
+						System.out.println("|Address :"+hotel.getAddress()+"|");
+						System.out.println("|City :"+hotel.getCity()+"|");
+						System.out.println("|Score :"+hotel.getScore()+"|");
+						System.out.println("|Review Count :"+hotel.getReviewCount()+"|");
+						System.out.println("|Amenties :"+hotel.getAmenities()+"|");
+						
+						System.out.println("|==================================================================|");
+					}
+			}
+			else if(type == 2) {
+				System.out.println("please enter hotel name");
+				String name = scanner.next();
+				 hotelListByName= hotelRepository.getHotelByName(name);
+				 for(Hotel hotel: hotelListByName ) {
+						System.out.println("|==================================================================|");
+						System.out.println("|Name :"+hotel.getName()+"|");
+						System.out.println("|Price :"+hotel.getPrice()+"|");
+						System.out.println("|Address :"+hotel.getAddress()+"|");
+						System.out.println("|City :"+hotel.getCity()+"|");
+						System.out.println("|Score :"+hotel.getScore()+"|");
+						System.out.println("|Review Count :"+hotel.getReviewCount()+"|");
+						System.out.println("|Amenties :"+hotel.getAmenities()+"|");
+						
+						System.out.println("|==================================================================|");
+					}
+			}
+			else {
+				System.out.println("please enter valid input");
+				continue;
+			}
+			
+			}
+	};
 
 	
 	@Override
 	public void run(String... args) throws Exception {
 		//oneFineStayScrapper.start();
 		operationType();
+		//searchByKeyword();
+		
 	}
 	
 	
@@ -45,6 +109,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 			System.out.println("|==================================================================|");
 			System.out.println("| Operation:                                                       |");
 			System.out.println("|        1. Crawl the site                                         |");
+			
 			System.out.println("|        5. Exit                                                   |");
 			System.out.println("|==================================================================|");
 			operationType = scanUserInput.nextInt();

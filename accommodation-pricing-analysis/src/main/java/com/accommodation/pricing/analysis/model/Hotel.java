@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.accommodation.pricing.analysis.validator.Validator;
 
-@Document(collation = "hotel-collections")
+@Document
 public class Hotel {
 
 	@Id

@@ -55,9 +55,10 @@ public class Trie {
 		return list;
 	}
 	
-//	public static void main(String []args) {
-//		List<String> words = List.of("hello", "dog", "hell", "cat", "a");
-//		Trie trie = new Trie(words);
-//		System.out.println(trie.getSuggestion("h"));
-//	}
+	
+	public static void main(String []args) {
+		List<String> words = List.of("hello", "dog", "hell", "cat", "a");
+		Trie trie = new Trie(words);
+		System.out.println(trie.getSuggestion("h"));
+	}
 }
