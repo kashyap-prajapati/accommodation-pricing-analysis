@@ -32,7 +32,8 @@ public class MomondoScrapper extends MomondoPageObject {
 	@Autowired private HotelRepository hotelRepository;
 	@Autowired private ApiService apiService;
 	
-	private static final String ONEFINESTAY_DOMAIN="https://www.momondo.ca/hotel-search";
+	private static final String MOMONDO_DOMAIN="https://www.momondo.ca/hotel-search";
+	private static final String KAYAK_DOMAIN="https://www.ca.kayak.com/hotels";
 	private HashMap<String,Object> queryParams;
 	private List<String> queryString;
 	private Driver driver;
@@ -93,7 +94,7 @@ public class MomondoScrapper extends MomondoPageObject {
 	
 	private void takeSearchInput() {
 		Scanner scanner = new Scanner(System.in);
-		suggestedLocations = apiService.getSearchSuggestionsFromDb();
+		suggestedLocations = apiService.getSearchSuggestionsFromDb("1");
 		List<String> words = new ArrayList<>();
 		for(LocationSearch locationSearch:suggestedLocations) {
 			words.add(locationSearch.getSearchQuery());
@@ -113,7 +114,7 @@ public class MomondoScrapper extends MomondoPageObject {
 			for(LocationSearch suggestion : suggestedLocation) {
 				System.out.println((i++)+". "+suggestion.getDisplayname());
 			}
-			System.out.println(i+". Oops!! No result found. Search again ");
+			System.out.println(i+". Oops!! No result found. do you want to search again from cache? ");
 			System.out.println((i+1)+". New search");
 			optInput = scanner.nextInt();
 			if(optInput==i)
@@ -129,7 +130,7 @@ public class MomondoScrapper extends MomondoPageObject {
 			String str = scanner.next();
 			List<LocationSearch> sugestionList = apiService.getSearch(str);
 			int i=1;
-			System.out.println("did you mean ? Please select one");
+			System.out.println("did you mean these ? Please select one");
 			for(LocationSearch suggestion : sugestionList) {
 				System.out.println((i++)+". "+suggestion.getDisplayname());
 			}
@@ -145,9 +146,9 @@ public class MomondoScrapper extends MomondoPageObject {
 		takeInput();		
 	}
 	
-	private String getURL() {
+	private String getURL(int type) {
 		URLParams urlParams = new URLParams(queryString);
-		return ONEFINESTAY_DOMAIN+urlParams.generateQueryString();
+		return  type == 1 ? KAYAK_DOMAIN : MOMONDO_DOMAIN +urlParams.generateQueryString();
 	}
 	
 	public void start1() {
@@ -155,11 +156,11 @@ public class MomondoScrapper extends MomondoPageObject {
 		takeSearchInput();
 	}
 	
-	public void start() {
+	public void start(int type) {
 		takeSearchInput();
 		initDriver();
 
-		driver.navigateToUrl(getURL());
+		driver.navigateToUrl(getURL(type));
 		int totalNumberPage = Integer.parseInt(driver.waitForElementToVisible(LAST_PAGE_NUMBER_XPATH).getText());
 		String city = driver.waitForElementToVisible(INPUT_CITY_XPATH).getText();
 		String fromDate = queryParams.get("fromDate").toString();

@@ -18,4 +18,5 @@ public interface HotelRepository extends MongoRepository<Hotel, String> {
 	@Query(value="{name:{$regex:?0,$options:'i'}}")
 	public List<Hotel> getHotelByName(String name);
 	
+
 }

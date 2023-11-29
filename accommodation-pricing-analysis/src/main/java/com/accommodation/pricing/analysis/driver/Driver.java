@@ -26,6 +26,9 @@ public class Driver {
         opt.addArguments("disable-infobars");
         opt.addArguments("--disable-extensions");
         opt.addArguments("--remote-allow-origins=*");
+        opt.addArguments("--ignore-certificate-errors");
+        opt.addArguments("--allow-insecure-localhost");
+        opt.addArguments("acceptInsecureCerts");
 		this.driver=new ChromeDriver(opt);
 		this.webDriverWait = new WebDriverWait(driver, EXPLICIT_WAIT_TIME_IN_SECONDS);
 	}

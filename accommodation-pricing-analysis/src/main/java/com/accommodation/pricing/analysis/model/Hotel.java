@@ -63,13 +63,14 @@ public class Hotel {
 	
 
 
+
 	@Override
 	public String toString() {
 		return "Hotel [id=" + id + ", price=" + price + ", name=" + name + ", description=" + description
-				+ ", location=" + location + ", address=" + address + ", amenities=" + amenities + ", city=" + city
-				+ ", fromDate=" + fromDate + ", toDate=" + toDate + ", url=" + url + ", reviewDescription="
-				+ reviewDescription + ", score=" + score + ", reviewCount=" + reviewCount + ", noOfguests=" + noOfguests
-				+ ", noOfRooms=" + noOfRooms + "]";
+				+ ", location=" + location + ", url=" + url + ", reviewDescription=" + reviewDescription + ", score="
+				+ score + ", reviewCount=" + reviewCount + ", noOfguests=" + noOfguests + ", noOfRooms=" + noOfRooms
+				+ ", city=" + city + ", fromDate=" + fromDate + ", toDate=" + toDate + ", overView=" + overView
+				+ ", address=" + address + ", amenities=" + amenities + ", allAmenities=" + allAmenities + "]";
 	}
 
 	public String getId() {

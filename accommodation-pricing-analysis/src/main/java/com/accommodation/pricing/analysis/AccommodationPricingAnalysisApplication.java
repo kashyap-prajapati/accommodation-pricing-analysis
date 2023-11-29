@@ -1,6 +1,5 @@
 package com.accommodation.pricing.analysis;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,10 +12,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignAutoConfiguration;
 
 import com.accommodation.pricing.analysis.model.Hotel;
-import com.accommodation.pricing.analysis.model.URLParams;
 import com.accommodation.pricing.analysis.repository.HotelRepository;
+import com.accommodation.pricing.analysis.script.HotwireScrapper;
 import com.accommodation.pricing.analysis.script.MomondoScrapper;
 import com.accommodation.pricing.analysis.script.Scrapper;
+import com.accommodation.pricing.analysis.service.ApiService;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.accommodation.pricing.analysis.feignclient")
@@ -24,8 +24,10 @@ import com.accommodation.pricing.analysis.script.Scrapper;
 public class AccommodationPricingAnalysisApplication implements CommandLineRunner {
 
 	@Autowired private Scrapper scrapper;
-	@Autowired private MomondoScrapper oneFineStayScrapper;
+	@Autowired private MomondoScrapper momondoScrapper;
+	@Autowired private HotwireScrapper hotwireScrapper;
 	@Autowired private static HotelRepository hotelRepository;
+	@Autowired private ApiService apiService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(AccommodationPricingAnalysisApplication.class, args);
@@ -39,8 +41,8 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 			System.out.println("|        2. Search By Name                                            |");
 			System.out.println("|        3. Press 3 for exit                                           |");
 			
-			List<Hotel> hotelListbyCity = new ArrayList<Hotel>();
-			List<Hotel> hotelListByName = new ArrayList<Hotel>();
+			List<Hotel> hotelListbyCity ;
+			List<Hotel> hotelListByName ;
 			Scanner scanner = new Scanner(System.in);
 			int type = scanner.nextInt();
 			if(type == 3) {
@@ -50,7 +52,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 				System.out.println("please enter city name");
 				String city = scanner.next();
 				 hotelListbyCity= hotelRepository.getHotelByCity(city);
-				 for(Hotel hotel: hotelListbyCity ) {
+				for(Hotel hotel: hotelListbyCity ) {
 						System.out.println("|==================================================================|");
 						System.out.println("|Name :"+hotel.getName()+"|");
 						System.out.println("|Price :"+hotel.getPrice()+"|");
@@ -61,7 +63,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 						System.out.println("|Amenties :"+hotel.getAmenities()+"|");
 						
 						System.out.println("|==================================================================|");
-					}
+				}
 			}
 			else if(type == 2) {
 				System.out.println("please enter hotel name");
@@ -76,7 +78,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 						System.out.println("|Score :"+hotel.getScore()+"|");
 						System.out.println("|Review Count :"+hotel.getReviewCount()+"|");
 						System.out.println("|Amenties :"+hotel.getAmenities()+"|");
-						
+			
 						System.out.println("|==================================================================|");
 					}
 			}
@@ -87,14 +89,27 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 			
 			}
 	};
+	
+	
+	
+	
 
 	
 	@Override
 	public void run(String... args) throws Exception {
 		//oneFineStayScrapper.start();
-		operationType();
+		//operationType();
+		searchWordUsingInvertedIndex();
 		//searchByKeyword();
-		
+		//hotwireScrapper.start();
+	}
+	
+	public void searchWordUsingInvertedIndex() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Please enter the word !!");
+		String str = scanner.next();
+		apiService.implementInvertedIndexSearch(str);
+		//scanner.close();
 	}
 	
 	
@@ -109,12 +124,15 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 			System.out.println("|==================================================================|");
 			System.out.println("| Operation:                                                       |");
 			System.out.println("|        1. Crawl the site                                         |");
-			
+			System.out.println("|        2. Normal Database search                                 |");
+			System.out.println("|        3. Search by word using inverted index                    |");
 			System.out.println("|        5. Exit                                                   |");
 			System.out.println("|==================================================================|");
 			operationType = scanUserInput.nextInt();
 			switch (operationType) {
 				case 1 -> crawlHotel();
+				case 2 -> normalDatabaseSearch();
+				case 3 -> searchWordUsingInvertedIndex();
 				case 5 -> {
 					System.out.println("Thank you for visiting !!");
 					break;
@@ -135,15 +153,16 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 			System.out.println("|              Select a Site to Scrap                              |");
 			System.out.println("|==================================================================|");
 			System.out.println("| Operation:                                                       |");
-			System.out.println("|        1. www.kayal.com                                          |");
-			System.out.println("|        2. www.onefinestay.com                                    |");
-			System.out.println("|        3. www.priceline.com                                      |");
-			System.out.println("|        9. Previous menu                                          |");
+			System.out.println("|        1. www.kayak.com                                          |");
+			System.out.println("|        2. www.momondo.ca                                         |");
+			System.out.println("|        3. www.vrbo.com                                           |");
+			System.out.println("|        5. exit                                                   |");
 			System.out.println("|==================================================================|");
 			operationType = scanUserInput.nextInt();
 			switch (operationType) {
-				case 1 -> oneFineStayScrapper.start();
-				case 2 -> oneFineStayScrapper.start();
+				case 1 -> momondoScrapper.start(1);
+				case 2 -> momondoScrapper.start(2);
+				case 3 -> hotwireScrapper.start();
 				default -> throw new IllegalArgumentException("Unexpected value: " + operationType);
 			}
 		}
@@ -151,38 +170,46 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 	}
 	
 	
-	public void prepareSearchQueryForKayal() {
-		System.out.flush();
-		String location = "Toronto,Ontario,Canada,Pearson-Intl-c11592-lYYZ";
+	public void normalDatabaseSearch() {
 		Scanner scanUserInput = new Scanner(System.in);
-		System.out.println("Please provide from date (YYYY-MM-DD) : ");
-		String fromDate = scanUserInput.next();
-		System.out.println("Please provide to date (YYYY-MM-DD) :");
-		String toDate = scanUserInput.next();
-		System.out.println("Please enter number of adults");
-		String adults = scanUserInput.next()+"adults";
-		URLParams urlParams = new URLParams(location,fromDate,toDate,adults);
-		System.out.println(urlParams.generateQueryString());
-		scrapper.start(urlParams);
+		int operationType = 0 ;
+		while(operationType!=5) {
+			System.out.println("|==================================================================|");
+			System.out.println("|              Please select search criteria                       |");
+			System.out.println("|==================================================================|");
+			System.out.println("| Operation:                                                       |");
+			System.out.println("|        1. Search by City                                         |");
+			System.out.println("|        2. Search by Name                                         |");
+			System.out.println("|        3. Exit                                                   |");
+			System.out.println("|==================================================================|");
+			operationType = scanUserInput.nextInt();
+			switch (operationType) {
+				case 1 -> searchByCity();
+				case 2 -> searchByName();
+				default -> throw new IllegalArgumentException("Unexpected value: " + operationType);
+			}
+		}
+		scanUserInput.close();
 	}
 	
-	public void prepareSearchQueryForOneFineStay() {
-		System.out.flush();
-		String location = "";
+	public void searchByCity() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("|==================================================================|");
+		System.out.println("|              Please enter city name                              |");
+		System.out.println("|==================================================================|");
+		String city = scanner.next();
+		List<Hotel> hotels = apiService.getHotelByCity(city);
+		apiService.printHotels(hotels);
 	}
 	
-	public void prepareSerachQueryForPriceline() {
-		System.out.flush();
-		String location = "Montreal, QC, Canada";
-		Scanner scanUserInput = new Scanner(System.in);
-		System.out.println("Please provide from date (YYYY-MM-DD) : ");
-		String fromDate = scanUserInput.next();
-		System.out.println("Please provide to date (YYYY-MM-DD) :");
-		String toDate = scanUserInput.next();
-		System.out.println("Please enter number of rooms");
-		String adults = scanUserInput.next();
-		
-		
+	public void searchByName() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("|==================================================================|");
+		System.out.println("|              Please enter hotel name                             |");
+		System.out.println("|==================================================================|");
+		String name = scanner.next();
+		List<Hotel> hotels = apiService.getHotelByName(name);
+		apiService.printHotels(hotels);
 	}
 
 }

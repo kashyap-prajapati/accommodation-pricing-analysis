@@ -30,6 +30,10 @@ public class LocationSearch {
 	private String cityonly;
 	private String locationname;
 	private String searchQuery;
+	private String siteId;
+	private String regionId;
+	private String category;
+	private String fullName;
 	
 	public String getPrimary_id() {
 		return primary_id;
@@ -157,6 +161,32 @@ public class LocationSearch {
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = Validator.removeSpecicalCharacterWithSpaceFromText(searchQuery.toLowerCase());
 	}
+	public String getSiteId() {
+		return siteId;
+	}
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
+	}
+	public String getRegionId() {
+		return regionId;
+	}
+	public void setRegionId(String regionId) {
+		this.regionId = regionId;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
+	
 	
 	
 }

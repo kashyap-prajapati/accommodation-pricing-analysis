@@ -15,7 +15,9 @@ public class URLParams {
 	public URLParams(List<String> queryString) {
 		this.queryString = queryString;
 	}
-	
+	public URLParams(Map<String,Object> queryMap) {
+		this.queryParams = queryMap;
+	}
 	
 	public URLParams(Map<String,Object> queryMap, List<String> queryString) {
 		this.queryString = queryString;
@@ -38,12 +40,22 @@ public class URLParams {
 		return urlQuery;
 	}
 	
+	
 	public String generateQueryStringAndQueryParams() {
 		String urlQuery = "";
 		for(String str : queryString) {
 			urlQuery = urlQuery + "/" + str;
 		}
 		urlQuery= urlQuery + "?";
+		for(String key:queryParams.keySet()) {
+			urlQuery = urlQuery + key +"="+queryParams.get(key)+"&";
+		}
+		return urlQuery;
+		
+	}
+	
+	public String generateQueryParams() {
+		String urlQuery= "?";
 		for(String key:queryParams.keySet()) {
 			urlQuery = urlQuery + key +"="+queryParams.get(key)+"&";
 		}

@@ -20,17 +20,25 @@ public class Validator {
 	}
 	
 	public static String removeSpecialCharacterFromText(String text) {
+		if(text==null)
+			return text;
 		return text.replaceAll(EXCLUDE_ALPHANUM_PATTERN, "");
 	}
 	
 	public static String removeSpecicalCharacterWithSpaceFromText(String text) {
+		if(text==null)
+			return text;
 		return text.replaceAll(EXCLUDE_ALPHANUM_SPACE_PATTERN, "");
 	}
 	
 	public static String removeSpecialCharacterFromNumber(String text) {
+		if(text==null)
+			return text;
 		return text.replaceAll(EXCLUDE_NUMBER_PATTERN, "");
 	}
 	public static String removeWhiteSpace(String text) {
+		if(text==null)
+			return text;
 		return text.replaceAll(WHITESPACE_PATTERN, "");
 	}
 }
