@@ -13,25 +13,42 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.accommodation.pricing.analysis.algorithms.Trie;
 import com.accommodation.pricing.analysis.constant.Constants;
 import com.accommodation.pricing.analysis.driver.Driver;
-import com.accommodation.pricing.analysis.feignclient.HotwireFeignClient;
 import com.accommodation.pricing.analysis.model.Hotel;
 import com.accommodation.pricing.analysis.model.LocationSearch;
-import com.accommodation.pricing.analysis.model.HotwireSearch.HotwireSuggestion;
 import com.accommodation.pricing.analysis.model.URLParams;
-import com.accommodation.pricing.analysis.pageobjects.HotwirePageObject;
+import com.accommodation.pricing.analysis.pageobjects.VerboPageObject;
 import com.accommodation.pricing.analysis.repository.HotelRepository;
 import com.accommodation.pricing.analysis.service.ApiService;
 import com.accommodation.pricing.analysis.validator.Validator;
 
+
+/**
+ * 
+ * VerboScrapper class is used to scrap the www.verbo.com
+ * This class contains the various methods that is used to extract the data from the  verbo.com site.
+ * This class take input from the user and prepare URL to scrap the data.
+ * This class also integrate with MONGODB to store the location search data.
+ * Also implements TRIE tree data structure to get suggestion based on already suggested words.
+ * @author KASHYAP PRAJAPATI 110126934
+ *
+ */
 @Component
-public class HotwireScrapper extends HotwirePageObject {
+public class VerboScrapper extends VerboPageObject {
 	
 	private static final String DOMAIN_NAME = "https://www.vrbo.com/search";
+	private static final String START_DATE = "startDate";
+	private static final String END_DATE = "endDate";
+	private static final String ROOMS = "rooms";
+	private static final String ADULTS = "adults";
+	private static final String CHILDREN="children";
+	private static final String SORT="sort";
+	private static final String RECOMMENDED="RECOMMENDED";
+	private static final String DESTINATION="destination";
+	private static final String REGION_ID="regionId";
 
 	@Autowired private HotelRepository hotelRepository;
 	private ApiService apiService;
@@ -43,7 +60,7 @@ public class HotwireScrapper extends HotwirePageObject {
 	
 	
 	@Autowired
-	public HotwireScrapper(ApiService apiService) {
+	public VerboScrapper(ApiService apiService) {
 		this.queryParams = new LinkedHashMap<>();
 		this.apiService = apiService;
 		suggestedLocations = apiService.getSearchSuggestionsFromDb("2");
@@ -56,7 +73,7 @@ public class HotwireScrapper extends HotwirePageObject {
 	}
 	
 	private void initDriver() {
-		this.driver = new Driver(false);	
+		this.driver = new Driver();	
 	}
 	
 	private String takeInputDateAndValidate(Scanner scanner) {
@@ -94,12 +111,12 @@ public class HotwireScrapper extends HotwirePageObject {
 		Integer adults = takeInputNumberAndValidate(scanUserInput);
 		System.out.println("Please enter number of adults");
 		Integer rooms = takeInputNumberAndValidate(scanUserInput);
-		queryParams.put("startDate", fromDate);
-		queryParams.put("endDate", toDate);
-		queryParams.put("rooms", rooms);
-		queryParams.put("adults", adults);
-		queryParams.put("children", 0);
-		queryParams.put("sort", "RECOMMENDED");
+		queryParams.put(START_DATE, fromDate);
+		queryParams.put(END_DATE, toDate);
+		queryParams.put(ROOMS, rooms);
+		queryParams.put(ADULTS, adults);
+		queryParams.put(CHILDREN, 0);
+		queryParams.put(SORT, RECOMMENDED);
 		
 	
 	}
@@ -146,8 +163,8 @@ public class HotwireScrapper extends HotwirePageObject {
 				continue;
 			searchQueryMap = hotwireList.get(optInput-1);
 		}		
-		queryParams.put("destination",searchQueryMap.getFullName());
-		queryParams.put("regionId", searchQueryMap.getRegionId());
+		queryParams.put(DESTINATION,searchQueryMap.getFullName());
+		queryParams.put(REGION_ID, searchQueryMap.getRegionId());
 		takeInput();
 	}
 	
@@ -254,19 +271,15 @@ public class HotwireScrapper extends HotwirePageObject {
 				    hotel.setLocation(location);
 				    hotel.setOverView(overView);
 				    hotel.setCity(city);
-				    hotel.setFromDate(queryParams.get("startDate").toString());
-				    hotel.setToDate(queryParams.get("endDate").toString());
-				    hotel.setNoOfguests(queryParams.get("adults").toString());
+				    hotel.setFromDate(queryParams.get(START_DATE).toString());
+				    hotel.setToDate(queryParams.get(END_DATE).toString());
+				    hotel.setNoOfguests(queryParams.get(ADULTS).toString());
 				    hotelRepository.save(hotel);
 					
 				}catch (Exception e) {
 					e.printStackTrace();
 				}finally {
-					ArrayList<String> tabs = new ArrayList<>(driver.getDriver().getWindowHandles());
-					if(tabs.size()>1) {
-						 driver.getDriver().close();
-						 driver.getDriver().switchTo().window(tabs.get(0));
-					} 
+					 driver.closeCurrentAndSwitchToParent();
 					if(i+1==total) {
 						JavascriptExecutor js = (JavascriptExecutor) driver.getDriver();
 						js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");

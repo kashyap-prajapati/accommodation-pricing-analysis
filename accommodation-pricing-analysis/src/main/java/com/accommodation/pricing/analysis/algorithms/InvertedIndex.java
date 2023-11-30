@@ -54,7 +54,6 @@ public class InvertedIndex {
 			checkForInvertedIndexPresentOrNot(hotel.getAmenities(), hotel);
 			checkForInvertedIndexPresentOrNot(hotel.getAllAmenities(), hotel);
 		}
-		System.out.println(invertedIndexData);
 	}
 	
 	

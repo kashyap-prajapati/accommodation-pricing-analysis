@@ -4,6 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Model class for URLParams that will generate query string and params
+ * @author KASHAYP PRAJAPATI 110126934
+ *
+ */
 public class URLParams {
 
 	private List<String> queryString;

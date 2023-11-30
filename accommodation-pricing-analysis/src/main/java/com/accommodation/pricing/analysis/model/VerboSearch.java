@@ -2,7 +2,13 @@ package com.accommodation.pricing.analysis.model;
 
 import java.util.List;
 
-public class HotwireSearch {
+/**
+ * 
+ * Model claas for verbo search location object
+ * @author KASHYAP PRAJAPATI
+ *
+ */
+public class VerboSearch {
 	
 	private String q;
 	private String rid;

@@ -8,9 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import com.accommodation.pricing.analysis.model.LocationSearch;
 
+/**
+ * This is the class for location search repository
+ * @author KASHYAP PRAJAPATI 110126934
+ *
+ */
 @Repository
 public interface LocationSearchRepository extends MongoRepository<LocationSearch, String>  {
-	
 	
 	public List<LocationSearch> findByCtid(String ctid);
 	

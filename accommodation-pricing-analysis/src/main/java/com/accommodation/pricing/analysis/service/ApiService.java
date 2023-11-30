@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.accommodation.pricing.analysis.algorithms.InvertedIndex;
 import com.accommodation.pricing.analysis.feignclient.ApiFeignClient;
-import com.accommodation.pricing.analysis.feignclient.HotwireFeignClient;
+import com.accommodation.pricing.analysis.feignclient.VerboFeignClient;
 import com.accommodation.pricing.analysis.model.Hotel;
-import com.accommodation.pricing.analysis.model.HotwireSearch;
-import com.accommodation.pricing.analysis.model.HotwireSearch.HotwireSuggestion;
+import com.accommodation.pricing.analysis.model.VerboSearch;
+import com.accommodation.pricing.analysis.model.VerboSearch.HotwireSuggestion;
 import com.accommodation.pricing.analysis.model.LocationSearch;
 import com.accommodation.pricing.analysis.repository.HotelRepository;
 import com.accommodation.pricing.analysis.repository.LocationSearchRepository;
@@ -21,7 +21,7 @@ public class ApiService {
 
 	@Autowired private LocationSearchRepository locationSearchRepository;
 	@Autowired private ApiFeignClient apiFeignClient;
-	@Autowired private HotwireFeignClient hotwireFeignClient;
+	@Autowired private VerboFeignClient hotwireFeignClient;
 	private HotelRepository hotelRepository;
 	
 	private InvertedIndex invertedIndex;
@@ -54,7 +54,7 @@ public class ApiService {
 	}
 	
 	public List<LocationSearch> getSerachForVerbo(String search){
-		HotwireSearch hotwireSearch = hotwireFeignClient.getSearchDropdownForHotwire(search);
+		VerboSearch hotwireSearch = hotwireFeignClient.getSearchDropdownForHotwire(search);
 		List<LocationSearch> list = new ArrayList<>();
 		for(HotwireSuggestion hotwireSuggestion:hotwireSearch.getSr()) {
 			LocationSearch locationSearch = new LocationSearch();

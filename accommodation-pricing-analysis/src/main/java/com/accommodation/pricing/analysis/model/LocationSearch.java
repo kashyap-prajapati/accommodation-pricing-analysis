@@ -5,6 +5,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.accommodation.pricing.analysis.validator.Validator;
 
+/**
+ * 
+ * Model class for Location Search repository
+ * @author KASHYAP PRAJAPATI
+ *
+ */
 @Document
 public class LocationSearch {
 

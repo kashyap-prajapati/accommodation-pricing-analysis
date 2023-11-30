@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.accommodation.pricing.analysis.model.Hotel;
 
+/**
+ * This is the class for Hotel Repository
+ * @author KASHYAP PRAJAPATI 110126934
+ *
+ */
 @Repository
 public interface HotelRepository extends MongoRepository<Hotel, String> {
 

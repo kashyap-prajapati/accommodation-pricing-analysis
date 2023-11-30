@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.accommodation.pricing.analysis.validator.Validator;
 
+/**
+ * This model class for hotel repository
+ * @author Kashyap Prajapati 110126934
+ *
+ */
 @Document
 public class Hotel {
 

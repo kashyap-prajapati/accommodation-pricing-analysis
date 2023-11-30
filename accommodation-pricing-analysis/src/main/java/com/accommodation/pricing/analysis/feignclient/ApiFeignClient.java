@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.accommodation.pricing.analysis.model.LocationSearch;
 
+
 @FeignClient(name="apiFeignClient",url="https://www.momondo.ca/mvm/smartyv2")
 public interface ApiFeignClient {
 
