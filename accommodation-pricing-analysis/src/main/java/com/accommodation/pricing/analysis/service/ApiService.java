@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.accommodation.pricing.analysis.algorithms.HeapSort;
 import com.accommodation.pricing.analysis.algorithms.InvertedIndex;
-import com.accommodation.pricing.analysis.algorithms.LCS_spell_checker;
+import com.accommodation.pricing.analysis.algorithms.EditDistance;
 import com.accommodation.pricing.analysis.feignclient.ApiFeignClient;
 import com.accommodation.pricing.analysis.feignclient.VerboFeignClient;
 import com.accommodation.pricing.analysis.model.Hotel;
@@ -117,7 +117,7 @@ public class ApiService {
 			hotel_valid_words.add(hotel_name);
 			
 		}
-		LCS_spell_checker lcs_obj= new LCS_spell_checker();
+		EditDistance lcs_obj= new EditDistance();
 		System.out.print("Enter the hotel name: ");
 		String user_provided_word = user_input_parser.next();
 		lcs_obj.suggest_corrections(user_provided_word,hotel_valid_words,5);

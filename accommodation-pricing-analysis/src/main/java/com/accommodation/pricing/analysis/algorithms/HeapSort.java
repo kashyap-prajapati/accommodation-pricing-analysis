@@ -1,4 +1,9 @@
 package com.accommodation.pricing.analysis.algorithms;
+/**
+ * This program performs heapsort to find the best deals for users from hotel price list.
+ * @author Subhram Satyajeet (110127932)
+ *
+ */
 
 //Code to sort the data on prices
 import java.util.Collections;
@@ -9,7 +14,10 @@ public class HeapSort {
 
 	
 	//sorting functionality
-	
+	/**
+	 * This function performs heapsort on the list of hotels and their prices using recursion
+	 * @param entryList: The list of hotel names and prices
+	 */
     public static void sortHotelPriceFuction(List<Map.Entry<Integer, String>> entryList) {
         int dim_size = entryList.size();
 
@@ -28,7 +36,12 @@ public class HeapSort {
         }
     }
 
-    
+    /**
+     * This function performs heapify after insertion of elements
+     * @param remainList: the remaining list passed after sorting
+     * @param heapsize: the size of the remaining heap
+     * @param node_pos: the root node value
+     */
     private static void remain_heapify(List<Map.Entry<Integer, String>> remainList, int heapsize, int node_pos) {
         int node_large_val = node_pos; 
         int left_small_val = 2 * node_pos + 1; 
