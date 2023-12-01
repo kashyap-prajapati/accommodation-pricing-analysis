@@ -39,28 +39,59 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		System.out.println("|==================================================================|");
 		System.out.println("|     Please enter the word ?                                      |");
 		System.out.println("|==================================================================|");
-	
 		System.out.println("Please enter the word !!");
 		String str = scanner.next();
 		apiService.implementInvertedIndexSearch(str);
 		scanner.close();
 	}
 	
+	public void spellCheckerUsingEditDistance() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("|==================================================================|");
+		System.out.println("|     Please enter the word ?                                      |");
+		System.out.println("|==================================================================|");
+		String str = scanner.next();
+		apiService.implementInvertedIndexSearch(str);
+		apiService.getWordListfromUsingEditDistance(str);
+		//scanner.close();
+	}
+	
+	public void bestDealSuggestionUsingHeapSort() {
+		apiService.getHotelListUsingHeapSort();
+	}
+	
+	public void implementPageRanking() {
+		apiService.implementPageRanking();
+	}
+	
+	public void implementKMP() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("|==================================================================|");
+		System.out.println("|     Please enter the word ?                                      |");
+		System.out.println("|==================================================================|");
+		String str = scanner.next();
+		apiService.implementKPM(str);
+	}
+	
 	
 	public void operationType() throws InterruptedException {
 		int operationType = 0 ;
-		while(operationType!=5) {
+		while(operationType!=8) {
 			Scanner scanUserInput = new Scanner(System.in);
 			System.out.flush();
 			System.out.println("\n\n");
 			System.out.println("|==================================================================|");
 			System.out.println("|                    MAIN MENU                                     |");
 			System.out.println("|==================================================================|");
-			System.out.println("|Operation:                                                       |");
-			System.out.println("|        1. Crawl the site                                         |");
+			System.out.println("|Operation:                                                        |");
+			System.out.println("|        1. Scrap the web site                                     |");
 			System.out.println("|        2. Normal Database search                                 |");
 			System.out.println("|        3. Search by word using inverted index                    |");
-			System.out.println("|        5. Exit                                                   |");
+			System.out.println("|        4. Spell checker using edit distance                      |");
+			System.out.println("|        5. Best deal suggestion using Heap Sort                   |");
+			System.out.println("|        6. Finding Pattern in Text using KMP                      |");
+			System.out.println("|        7. Page ranking                                           |");
+			System.out.println("|        8. Exit                                                   |");
 			System.out.println("|==================================================================|");
 			System.out.flush();
 			operationType = scanUserInput.nextInt();
@@ -68,7 +99,11 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 				case 1 -> crawlHotel();
 				case 2 -> normalDatabaseSearch();
 				case 3 -> searchWordUsingInvertedIndex();
-				case 5 -> {
+				case 4 -> spellCheckerUsingEditDistance();
+				case 5 -> bestDealSuggestionUsingHeapSort();
+				case 6 -> implementKMP();
+				case 7 -> implementPageRanking();
+				case 8 -> {
 					System.out.println("|==================================================================|");
 					System.out.println("|         Thank you for visiting                                   |");
 					System.out.println("|==================================================================|");

@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.accommodation.pricing.analysis.model.Hotel;
+
 public class HeapSort {
 
 	
@@ -18,7 +20,7 @@ public class HeapSort {
 	 * This function performs heapsort on the list of hotels and their prices using recursion
 	 * @param entryList: The list of hotel names and prices
 	 */
-    public static void sortHotelPriceFuction(List<Map.Entry<Integer, String>> entryList) {
+    public static void sortHotelPriceFuction(List<Map.Entry<Integer, Hotel>> entryList) {
         int dim_size = entryList.size();
 
         //recursively sort the functionality
@@ -42,7 +44,7 @@ public class HeapSort {
      * @param heapsize: the size of the remaining heap
      * @param node_pos: the root node value
      */
-    private static void remain_heapify(List<Map.Entry<Integer, String>> remainList, int heapsize, int node_pos) {
+    private static void remain_heapify(List<Map.Entry<Integer, Hotel>> remainList, int heapsize, int node_pos) {
         int node_large_val = node_pos; 
         int left_small_val = 2 * node_pos + 1; 
         int right_small_val = 2 * node_pos + 2;

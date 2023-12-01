@@ -1,4 +1,4 @@
-package com.accommodation.pricing.analysis.algorithms;
+	package com.accommodation.pricing.analysis.algorithms;
 /**
  * This program is based on LCS dynamic programming technique to suggest words based on Levenshtein distance.
  * It handles difference between 2 words in terms of insertion, deletion and substitution of characters among them.

@@ -6,15 +6,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accommodation.pricing.analysis.algorithms.EditDistance;
 import com.accommodation.pricing.analysis.algorithms.HeapSort;
 import com.accommodation.pricing.analysis.algorithms.InvertedIndex;
 import com.accommodation.pricing.analysis.algorithms.KMP;
-import com.accommodation.pricing.analysis.algorithms.EditDistance;
+import com.accommodation.pricing.analysis.algorithms.PageRanking;
 import com.accommodation.pricing.analysis.feignclient.ApiFeignClient;
 import com.accommodation.pricing.analysis.feignclient.VerboFeignClient;
 import com.accommodation.pricing.analysis.model.Hotel;
@@ -109,23 +109,17 @@ public class ApiService {
 		return hotelRepository.getHotelByName(name);
 	}
 	
-	public List<Hotel> getWordListfromDB(){
+	public List<Hotel> getWordListfromUsingEditDistance(String userInput){
 		List<Hotel> obj= hotelRepository.findAll();
-		Scanner user_input_parser = new Scanner(System.in);
-		ArrayList<String> hotel_valid_words = new ArrayList<String>();
+		ArrayList<String> validWords = new ArrayList<>();
 		for(Hotel hotel: obj) {
-			String hotel_name = hotel.getName();
-			//System.out.println(hotel_name);
-			hotel_valid_words.add(hotel_name);
-			
+			validWords.add(hotel.getName());
 		}
-		EditDistance lcs_obj= new EditDistance();
-		System.out.print("Enter the hotel name: ");
-		String user_provided_word = user_input_parser.next();
-		lcs_obj.suggest_corrections(user_provided_word,hotel_valid_words,5);
-		
+		EditDistance lcs= new EditDistance();
+		lcs.suggest_corrections(userInput,validWords,5);
 		return obj;
 	}
+	
 	
 	public void implementKPM(String patt) {
 		List<Hotel> obj= hotelRepository.findAll();
@@ -139,39 +133,34 @@ public class ApiService {
 				break;
 			}
 		}
-		
 	}
+
 	
-	public Map<Integer, String> getHotelListfromDB(){
-		Scanner user_input_hotel_reader = new Scanner(System.in);
+	public void getHotelListUsingHeapSort(){
 		List<Hotel> obj= hotelRepository.findAll();
-		Map<Integer, String> hotelPriceMap = new HashMap<>();
+		Map<Integer, Hotel> hotelPriceMap = new HashMap<>();
 		for(Hotel hotel: obj) {
-			Integer hotel_price =  Integer.valueOf(hotel.getPrice());
-			String hotel_id = hotel.getId();
-			hotelPriceMap.put(hotel_price,hotel_id);
+			try {
+				Integer hotelPrice =  Integer.valueOf(hotel.getPrice());
+				hotelPriceMap.put(hotelPrice,hotel);
+			}catch(Exception e){
+				
+			}
 		}
-			System.out.println(hotelPriceMap);	
-			
-			 // Convert the entries of the map to a list
-	        List<Map.Entry<Integer, String>> entryList = new ArrayList<>(hotelPriceMap.entrySet());
-
-	        // Use heap sort to sort the entries based on keys
-	        HeapSort sort_hotels_on_prices = new HeapSort();
-	        sort_hotels_on_prices.sortHotelPriceFuction(entryList);
-
-	        // Print the sorted entries
-	        System.out.println("Sorted Map:");
-	        for (Map.Entry<Integer, String> entry : entryList) {
-	            //System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
-	            //List<Hotel> sorted_hotels= 
-	            System.out.println(hotelRepository.findById(entry.getValue()));
-	        	
-	        }
-
-			
-			return hotelPriceMap;
-		}
+		List<Map.Entry<Integer, Hotel>> entryList = new ArrayList<>(hotelPriceMap.entrySet());
+        HeapSort heapSort = new HeapSort();
+        heapSort.sortHotelPriceFuction(entryList);
+        List<Hotel> hotelList = new ArrayList<Hotel>();
+        for (Map.Entry<Integer, Hotel> entry : entryList) {            
+        	hotelList.add(entry.getValue());
+        }
+        printHotels(hotelList);
+	}
+	public void implementPageRanking() {
+		List<Hotel> hotelList = hotelRepository.findAll();
+		PageRanking pageRanking = new PageRanking();
+		pageRanking.implementPageRank(hotelList);
+	}
 	
 
 }
