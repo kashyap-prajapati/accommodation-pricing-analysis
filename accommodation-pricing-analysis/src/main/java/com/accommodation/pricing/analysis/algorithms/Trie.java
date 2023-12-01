@@ -100,16 +100,5 @@ public class Trie {
 		getSuggestion(lastNode, list, buffer);
 		return list;
 	}
-	
-	/**
-	 * Main method for testing the Trie functionality.
-	 * @param args
-	 * 
-	 * @author sachreet kaur(110122441)
-	 */
-	public static void main(String []args) {
-		List<String> words = List.of("hello", "dog", "hell", "cat", "a");
-		Trie trie = new Trie(words);
-		System.out.println(trie.getSuggestion("h"));
-	}
+
 }

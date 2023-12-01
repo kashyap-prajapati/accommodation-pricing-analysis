@@ -47,7 +47,6 @@ public class PageRanking {
     	 System.out.println("|==================================================================|");
          for (Keyword keyword : keywordArray) {
         	 System.out.println("|             "+keyword.getWord()+"       |  "+Integer.toString(keyword.getOccurrences())+"        |      "+Integer.toString(keyword.getRank()));
-        	 break;
          }
      	 System.out.println("|==================================================================|");
     }

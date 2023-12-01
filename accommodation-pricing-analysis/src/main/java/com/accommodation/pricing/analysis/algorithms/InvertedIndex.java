@@ -71,7 +71,6 @@ public class InvertedIndex {
 				list.addAll(invertedIndexData.get(key));
 			}
 		}
-		System.out.println("list"+list);
 		return list;
 	}
 	
