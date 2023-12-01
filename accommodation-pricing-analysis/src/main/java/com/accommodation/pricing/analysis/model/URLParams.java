@@ -38,6 +38,10 @@ public class URLParams {
 		this.queryString = queryString;
 	}
 	
+	/**
+     * Generate a simple query string from the list of query components.
+     * @return The generated query string.
+     */
 	public String generateQueryString() {
 		String urlQuery = "";
 		for(String str : queryString) {
@@ -46,7 +50,10 @@ public class URLParams {
 		return urlQuery;
 	}
 	
-	
+	/**
+     * Generate a query string and append query parameters.
+     * @return The generated query string with appended query parameters.
+     */
 	public String generateQueryStringAndQueryParams() {
 		String urlQuery = "";
 		for(String str : queryString) {
@@ -60,6 +67,10 @@ public class URLParams {
 		
 	}
 	
+	/**
+     * Generate query parameters.
+     * @return The generated query parameters.
+     */
 	public String generateQueryParams() {
 		String urlQuery= "?";
 		for(String key:queryParams.keySet()) {

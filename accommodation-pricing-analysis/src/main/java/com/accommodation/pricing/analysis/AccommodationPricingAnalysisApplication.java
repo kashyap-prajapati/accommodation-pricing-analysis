@@ -19,6 +19,11 @@ import com.accommodation.pricing.analysis.service.ApiService;
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.accommodation.pricing.analysis.feignclient")
 @ImportAutoConfiguration({FeignAutoConfiguration.class})
+
+/**
+ * Main application class for Accommodation Pricing Analysis.
+ * @author sachreet kaur(110122441)
+ */
 public class AccommodationPricingAnalysisApplication implements CommandLineRunner {
 
 	@Autowired private MomondoScrapper momondoScrapper;
@@ -34,6 +39,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		operationType();
 	}
 	
+	// Method to perform word search using Inverted Index
 	public void searchWordUsingInvertedIndex() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("|==================================================================|");
@@ -46,7 +52,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		scanner.close();
 	}
 	
-	
+	// Method to handle the main menu operations
 	public void operationType() throws InterruptedException {
 		int operationType = 0 ;
 		while(operationType!=5) {
@@ -79,6 +85,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		}
 	}
 	
+	// Method to perform scrapping
 	public void crawlHotel() throws InterruptedException {
 		Scanner scanUserInput = new Scanner(System.in);
 		int operationType = 0 ;
@@ -106,7 +113,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		}
 	}
 	
-	
+	// Method to perform normal database search
 	public void normalDatabaseSearch() {
 		Scanner scanUserInput = new Scanner(System.in);
 		int operationType = 0 ;
@@ -130,6 +137,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		}
 	}
 	
+	// Method to search hotels by city
 	public void searchByCity() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("|==================================================================|");
@@ -140,6 +148,7 @@ public class AccommodationPricingAnalysisApplication implements CommandLineRunne
 		apiService.printHotels(hotels);
 	}
 	
+	// Method to search hotels by name
 	public void searchByName() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("|==================================================================|");

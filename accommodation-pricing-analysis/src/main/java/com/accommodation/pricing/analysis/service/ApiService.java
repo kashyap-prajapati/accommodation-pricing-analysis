@@ -28,7 +28,7 @@ import com.accommodation.pricing.analysis.repository.LocationSearchRepository;
 
 /**
  * Service class for handling API calls and business logic.
- * @author kashyap prajapati
+ * @author sachreet kaur(110122441)
  *
  */
 public class ApiService {

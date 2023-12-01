@@ -39,6 +39,7 @@ import com.accommodation.pricing.analysis.validator.Validator;
 @Component
 public class VerboScrapper extends VerboPageObject {
 	
+	// Constants for URL parameters
 	private static final String DOMAIN_NAME = "https://www.vrbo.com/search";
 	private static final String START_DATE = "startDate";
 	private static final String END_DATE = "endDate";
@@ -59,6 +60,12 @@ public class VerboScrapper extends VerboPageObject {
 	private List<LocationSearch> suggestedLocations;
 	
 	
+	/**
+     * Constructor for VerboScrapper.
+     * Initializes instance variables and sets up TRIE with suggested words.
+     *
+     * @param apiService The ApiService dependency.
+     */
 	@Autowired
 	public VerboScrapper(ApiService apiService) {
 		this.queryParams = new LinkedHashMap<>();
@@ -72,10 +79,16 @@ public class VerboScrapper extends VerboPageObject {
 	
 	}
 	
+	/**
+     * Web Driver Initialization
+     */
 	private void initDriver() {
 		this.driver = new Driver();	
 	}
 	
+	/**
+     * Handles the user input, prepares the URL, and initiates the scraping process.
+     */
 	private String takeInputDateAndValidate(Scanner scanner) {
 		String strDate=null;
 		while(strDate==null) {
@@ -90,6 +103,7 @@ public class VerboScrapper extends VerboPageObject {
 		return strDate;
 	}
 	
+	// Method to take a valid number input from the user
 	private Integer takeInputNumberAndValidate(Scanner scanner) {
 		String number = null;
 		while(number==null) {
@@ -100,6 +114,7 @@ public class VerboScrapper extends VerboPageObject {
 		return Integer.parseInt(number);
 	}
 	
+	// Method to take user input for date, number of rooms, and number of adults
 	private void takeInput() {
 		System.out.flush();
 		Scanner scanUserInput = new Scanner(System.in);
@@ -121,7 +136,7 @@ public class VerboScrapper extends VerboPageObject {
 	
 	}
 	
-	
+	// Method to take user input for the search query, handle suggestions, and set destination parameters
 	private void takeSearchInput() {
 		Scanner scanner = new Scanner(System.in);
 	
@@ -168,18 +183,20 @@ public class VerboScrapper extends VerboPageObject {
 		takeInput();
 	}
 	
-	
+	// Method to construct the URL based on the user input parameters
 	private String getURL() {
 		URLParams urlParams = new URLParams(queryParams);
 		return DOMAIN_NAME+urlParams.generateQueryParams();
 	}
 	
-	
+	// Method to handle the user input, initialize the WebDriver, and navigate to the constructed URL
 	private void handleInput() {
 		takeSearchInput();
 		initDriver();
 		driver.navigateToUrl(getURL()); 		
 	}
+	
+	// Main method to start fpr process of scrapping
 	public void start() {
 		handleInput();
 		
