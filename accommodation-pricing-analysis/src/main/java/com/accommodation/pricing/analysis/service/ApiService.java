@@ -25,6 +25,12 @@ import com.accommodation.pricing.analysis.repository.HotelRepository;
 import com.accommodation.pricing.analysis.repository.LocationSearchRepository;
 
 @Service
+
+/**
+ * Service class for handling API calls and business logic.
+ * @author kashyap prajapati
+ *
+ */
 public class ApiService {
 
 	@Autowired private LocationSearchRepository locationSearchRepository;
@@ -40,15 +46,17 @@ public class ApiService {
 		invertedIndex = new InvertedIndex(hotelRepository.findAll());
 	}
 	
-
+	// Check if LocationSearch already exists in the database
 	public boolean isLocationSearchAlreadyExists(LocationSearch locationSearch) {
 		return locationSearchRepository.getLocationSearchs(locationSearch.getCtid(),locationSearch.getCategory()).isEmpty();
 	}
 	
+	// Get search suggestions from the database based on category
 	public List<LocationSearch> getSearchSuggestionsFromDb(String category){
 		return locationSearchRepository.findByCategory(category);
 	}
 	
+	// Get search suggestions from an external API and update the database
 	public List<LocationSearch> getSearch(String search){
 		List<LocationSearch> list =  apiFeignClient.getSearchDropdown(search);
 		for(LocationSearch locationSearch : list) {
@@ -61,6 +69,7 @@ public class ApiService {
 		return list;
 	}
 	
+	// Get search suggestions from an external API (Hotwire) and update the database
 	public List<LocationSearch> getSerachForVerbo(String search){
 		VerboSearch hotwireSearch = hotwireFeignClient.getSearchDropdownForHotwire(search);
 		List<LocationSearch> list = new ArrayList<>();
@@ -80,10 +89,12 @@ public class ApiService {
 		return list;
 	}
 	
+	// Perform a search using Inverted Index and print the results
 	public void implementInvertedIndexSearch(String str) {
 		printHotels(invertedIndex.getInvertedIndexSearchData(str));
 	}
 	
+	// Printy hotel details
 	public void printHotels(List<Hotel> hotels) {
 		int i=1;
 		for(Hotel hotel: hotels) {
@@ -101,14 +112,17 @@ public class ApiService {
 		}
 	}
 	
+	// Get hotels by City from DB
 	public List<Hotel> getHotelByCity(String city){
 		return hotelRepository.getHotelByCity(city);
 	}
 	
+	// Get hotels by Name from DB
 	public List<Hotel> getHotelByName(String name){
 		return hotelRepository.getHotelByName(name);
 	}
 	
+	// Get a list of words from the database and suggest corrections using Edit Distance
 	public List<Hotel> getWordListfromDB(){
 		List<Hotel> obj= hotelRepository.findAll();
 		Scanner user_input_parser = new Scanner(System.in);
@@ -127,6 +141,7 @@ public class ApiService {
 		return obj;
 	}
 	
+	// Perform a search using Knuth-Morris-Pratt algorithm and print the result
 	public void implementKPM(String patt) {
 		List<Hotel> obj= hotelRepository.findAll();
 		KMP kmp = new KMP();
@@ -142,6 +157,7 @@ public class ApiService {
 		
 	}
 	
+	// Get a sorted list of hotels based on prices from the database
 	public Map<Integer, String> getHotelListfromDB(){
 		Scanner user_input_hotel_reader = new Scanner(System.in);
 		List<Hotel> obj= hotelRepository.findAll();
