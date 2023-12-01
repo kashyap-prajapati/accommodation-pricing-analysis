@@ -49,8 +49,6 @@ public class InvertedIndex {
 		for(Hotel hotel:hotels) {
 			String[] nameWords = hotel.getName().split("\\s");
 			checkForInvertedIndexPresentOrNot(nameWords,hotel);
-		//	checkForInvertedIndexPresentOrNot(hotel.getDescription(), hotel);
-		//	checkForInvertedIndexPresentOrNot(hotel.getOverView().split("\\s"), hotel);
 			checkForInvertedIndexPresentOrNot(hotel.getAmenities(), hotel);
 			checkForInvertedIndexPresentOrNot(hotel.getAllAmenities(), hotel);
 		}

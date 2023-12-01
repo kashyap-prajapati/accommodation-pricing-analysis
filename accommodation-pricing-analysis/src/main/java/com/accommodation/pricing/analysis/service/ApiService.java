@@ -2,6 +2,7 @@ package com.accommodation.pricing.analysis.service;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.accommodation.pricing.analysis.algorithms.HeapSort;
 import com.accommodation.pricing.analysis.algorithms.InvertedIndex;
+import com.accommodation.pricing.analysis.algorithms.KMP;
 import com.accommodation.pricing.analysis.algorithms.EditDistance;
 import com.accommodation.pricing.analysis.feignclient.ApiFeignClient;
 import com.accommodation.pricing.analysis.feignclient.VerboFeignClient;
@@ -123,6 +125,21 @@ public class ApiService {
 		lcs_obj.suggest_corrections(user_provided_word,hotel_valid_words,5);
 		
 		return obj;
+	}
+	
+	public void implementKPM(String patt) {
+		List<Hotel> obj= hotelRepository.findAll();
+		KMP kmp = new KMP();
+		String text = "";
+		for(Hotel hotel : obj) {
+			text = hotel.getOverView();
+			int i = kmp.searchKMP(patt, text);
+			if(i!=-1) {
+				printHotels(Arrays.asList(hotel));
+				break;
+			}
+		}
+		
 	}
 	
 	public Map<Integer, String> getHotelListfromDB(){
