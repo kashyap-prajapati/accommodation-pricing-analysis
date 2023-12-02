@@ -11,7 +11,7 @@ import com.accommodation.pricing.analysis.model.Hotel;
 
 /**
  * InvertedIndex class for creating and searching an inverted index for hotels.
- * @author Aditya
+ * @author Aditya Bhate
  *
  */
 
@@ -20,7 +20,6 @@ public class InvertedIndex {
 	private Map<String,Set<Hotel>> invertedIndexData;
 	
 	private InvertedIndex() {
-		
 	}
 	
 	// Method to add a hotel to the inverted index based on a single key
