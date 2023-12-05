@@ -3,6 +3,7 @@ package com.accommodation.pricing.analysis.script;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -94,15 +95,22 @@ public class VerboScrapper extends VerboPageObject {
 		while(strDate==null) {
 			try {
 				strDate = scanner.next();
-				new SimpleDateFormat(Constants.DATE_FORMAT).parse(strDate);
+				SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+				df.setLenient(false);
+				Date date =  df.parse(strDate);
+				if(!date.after(new Date())) {
+					System.out.println(" Date should be greater than today's date");
+					strDate = null;
+					continue;
+				}
 			} catch (ParseException ex) {
 				strDate = null;
-				System.out.println("Please provide date in (YYYY-MM-DD) : ");
+				System.out.println("Error : Invalid date");
+				System.out.println(" Please provide date in (YYYY-MM-DD) again : ");
 			}
 		}
 		return strDate;
 	}
-	
 	// Method to take a valid number input from the user
 	private Integer takeInputNumberAndValidate(Scanner scanner) {
 		String number = null;

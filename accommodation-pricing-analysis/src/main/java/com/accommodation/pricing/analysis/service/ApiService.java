@@ -23,6 +23,7 @@ import com.accommodation.pricing.analysis.model.VerboSearch;
 import com.accommodation.pricing.analysis.model.VerboSearch.HotwireSuggestion;
 import com.accommodation.pricing.analysis.repository.HotelRepository;
 import com.accommodation.pricing.analysis.repository.LocationSearchRepository;
+import com.accommodation.pricing.analysis.validator.Validator;
 
 @Service
 
@@ -102,6 +103,7 @@ public class ApiService {
 			System.out.println("\n\n");
 			System.out.println("|==================================================================|");
 			System.out.println(" |   Name     : "+hotel.getName());
+			System.out.println(" |   Overview : "+ Validator.removeSpecialCharacterFromText(hotel.getOverView()));
 			System.out.println(" |   Price    : "+hotel.getPrice());
 			System.out.println(" |   Address  : "+hotel.getAddress());
 			System.out.println(" |   City     : "+hotel.getCity());
@@ -129,8 +131,8 @@ public class ApiService {
 		KMP kmp = new KMP();
 		String text = "";
 		for(Hotel hotel : obj) {
-			text = hotel.getOverView();
-			int i = kmp.searchKMP(patt, text);
+			text = hotel.getOverView().toLowerCase();
+			int i = kmp.searchKMP(patt.toLowerCase(), text);
 			if(i!=-1) {
 				printHotels(Arrays.asList(hotel));
 				break;

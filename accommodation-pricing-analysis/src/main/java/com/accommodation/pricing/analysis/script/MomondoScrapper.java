@@ -3,6 +3,7 @@ package com.accommodation.pricing.analysis.script;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,10 +89,18 @@ public class MomondoScrapper extends MomondoPageObject {
 		while(strDate==null) {
 			try {
 				strDate = scanner.next();
-				new SimpleDateFormat(Constants.DATE_FORMAT).parse(strDate);
+				SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+				df.setLenient(false);
+				Date date =  df.parse(strDate);
+				if(!date.after(new Date())) {
+					System.out.println(" Date should be greater than today's date");
+					strDate = null;
+					continue;
+				}
 			} catch (ParseException ex) {
 				strDate = null;
-				System.out.println("Please provide date in (YYYY-MM-DD) : ");
+				System.out.println("Error : Invalid date");
+				System.out.println("Please provide date in (YYYY-MM-DD) again : ");
 			}
 		}
 		return strDate;

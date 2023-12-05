@@ -1,7 +1,10 @@
 package com.accommodation.pricing.analysis.algorithms;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.accommodation.pricing.analysis.model.Hotel;
 import com.accommodation.pricing.analysis.validator.Validator;
@@ -42,11 +45,14 @@ public class PageRanking {
              keywordArray[i] = new Keyword(words[i], keywordOccurrences[i], keywordRanks[i]);
          }
          Arrays.sort(keywordArray);
+         
      	 System.out.println("|==================================================================|");
      	 System.out.println("|   Keyword       |    Occerrences    |        Rank                |");
     	 System.out.println("|==================================================================|");
-         for (Keyword keyword : keywordArray) {
-        	 System.out.println("|             "+keyword.getWord()+"       |  "+Integer.toString(keyword.getOccurrences())+"        |      "+Integer.toString(keyword.getRank()));
+    	 int i=0;
+    	 for (Keyword keyword : keywordArray) {
+        	System.out.println("|             "+keyword.getWord()+"       |  "+Integer.toString(keyword.getOccurrences())+"        |      "+Integer.toString(keyword.getRank()));
+            
          }
      	 System.out.println("|==================================================================|");
     }
