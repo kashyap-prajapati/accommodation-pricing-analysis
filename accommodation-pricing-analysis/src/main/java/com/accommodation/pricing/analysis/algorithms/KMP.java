@@ -3,7 +3,7 @@ package com.accommodation.pricing.analysis.algorithms;
 /**
  * KMP class implement knuth moris pratt algorithm to match the pattern in string.
  * 
- * @author Aditya bhate
+ * @author Aditya Bhate
  *
  */
 public class KMP {
