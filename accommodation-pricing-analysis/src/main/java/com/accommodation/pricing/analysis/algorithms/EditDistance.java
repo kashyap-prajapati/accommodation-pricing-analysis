@@ -22,9 +22,9 @@ public class EditDistance {
 	 * @param b: word 2
 	 * @return
 	 */
-		public static int cost_to_nearest_word(char a, char b) {
-			//Function to check the cost of converting one word to another
-	        return a == b ? 0 : 1;
+		public static int nearest_word_cost_calculator(char word_ele_1, char word_ele_2) {
+			//Check if words are same or different
+	        return word_ele_1 == word_ele_2 ? 0 : 1;
 	    }
 		
 		/**
@@ -32,9 +32,9 @@ public class EditDistance {
 		 * @param input_nums: range of values 
 		 * @return
 		 */
-		public static int find_min_operations(int... input_nums) {
-			//Function to calculate the minimum number of operations to convert one word to another
-	        return Arrays.stream(input_nums)
+		public static int calculate_operations(int... range_input_vals) {
+			//Function to determine minimal number of conversional operations
+	        return Arrays.stream(range_input_vals)
 	          .min().orElse(Integer.MAX_VALUE);
 	    }
 		
@@ -44,79 +44,79 @@ public class EditDistance {
 		 * @param valid_words: List of valid given words in repository
 		 * @param threshold_val: The threshold number of suggestions provided
 		 */
-		public static void suggest_corrections(String user_literal, ArrayList<String> valid_words, int threshold_val){
-			//Function to suggest the nearest word based on the misspelled word
-			//Variable to take user provided word
-			int user_word_length = user_literal.length();
+		public static void suggest_corrections(String user_supplied_misspelled_literal, ArrayList<String> valid_words, int threshold_val){
+			//Function to implement correctional suggestions
+			//user word length dtermination
+			int user_misspelled_word_length = user_supplied_misspelled_literal.length();
 			String []atomic_words_hotels;
 			//Declaring hashmap to store the suggested words and their conversion cost
 			LinkedHashMap<String, Integer> sorted_suggestions = new LinkedHashMap<String, Integer>(); 
-			//Variable to store each word from the list of words
-			String word_to_compare = "";
-			//Looping through each word in the list to calculate the cost of conversion
+			//Variable to store intermediate list of words
+			String compare_to_candidate_word = "";
+			//Checking individual words conversion cost length
 		    for(int list_counter=0; list_counter<valid_words.size(); list_counter++) {  
-		    	word_to_compare = valid_words.get(list_counter);
-		    	atomic_words_hotels = word_to_compare.split(" ");
-		    	int min_dist = 9999;
+		    	compare_to_candidate_word = valid_words.get(list_counter);
+		    	atomic_words_hotels = compare_to_candidate_word.split(" ");
+		    	int min_set_dist = 9999;
 		    	for(int atomic_counter = 0; atomic_counter<atomic_words_hotels.length; atomic_counter++ )
 		    	{
 		    		String single_word = atomic_words_hotels[atomic_counter];
 		    		int comparator_word_length = single_word.length();
-		    		int[][] comparator_array = new int[user_word_length+1][comparator_word_length+1];
-		    		//System.out.println(comparator_array);
-		    		//Code to calculate the Levenshtein distance based on LCS programming technique
-		    			for(int i=0; i<=user_word_length; i++){
+		    		int[][] comparator_Levenshtein_array = new int[user_misspelled_word_length+1][comparator_word_length+1];
+		    		
+		    		//Dtermination of Levenshtein distance between 2 words
+		    			for(int i=0; i<=user_misspelled_word_length; i++){
 		    				for(int j=0; j<=comparator_word_length; j++){
 		    					if (i == 0) {
-		    						comparator_array[i][j] = j;
+		    						comparator_Levenshtein_array[i][j] = j;
 		    		            }
 		    		            else if (j == 0) {
-		    		            	comparator_array[i][j] = i;
+		    		            	comparator_Levenshtein_array[i][j] = i;
 		    		            }
 		    		            else {
-		    		            	//Calculating the Levenshtein distance
-		    		            	comparator_array[i][j] = find_min_operations(comparator_array[i - 1][j - 1] 
-		    		                 + cost_to_nearest_word(user_literal.charAt(i - 1), single_word.charAt(j - 1)), 
-		    		                 comparator_array[i - 1][j] + 1, 
-		    		                 comparator_array[i][j - 1] + 1);
+		    		            	//Levenshtein distance by dynamic programming
+		    		            	comparator_Levenshtein_array[i][j] = calculate_operations(comparator_Levenshtein_array[i - 1][j - 1] 
+		    		                 + nearest_word_cost_calculator(user_supplied_misspelled_literal.charAt(i - 1), single_word.charAt(j - 1)), 
+		    		                 comparator_Levenshtein_array[i - 1][j] + 1, 
+		    		                 comparator_Levenshtein_array[i][j - 1] + 1);
 		    		            }
 		    				}
 		    			}
-		    			if(comparator_array[user_word_length][comparator_word_length]<min_dist)
-		    				min_dist = comparator_array[user_word_length][comparator_word_length];
+		    			if(comparator_Levenshtein_array[user_misspelled_word_length][comparator_word_length]<min_set_dist)
+		    				min_set_dist = comparator_Levenshtein_array[user_misspelled_word_length][comparator_word_length];
 		    	}
 		    			
-		    			//Inserting the words and their distances into the hashmap
-		    			sorted_suggestions.put(word_to_compare, min_dist);
+		    			//Insertion into a Linked HashMap
+		    			sorted_suggestions.put(compare_to_candidate_word, min_set_dist);
 		    	}
-		    //Declaring an arraylist to sort the words in Linked Hash Map based on their distances in ascending order
-		    List<Map.Entry<String, Integer> > sorter_array = new ArrayList<Map.Entry<String, Integer> >(
+		    //Leveraging arraylist to sort the elements of LinkedHashMap
+		    List<Map.Entry<String, Integer> > words_arranger_array = new ArrayList<Map.Entry<String, Integer> >(
 		    		sorted_suggestions.entrySet());
 		    
-		    //Sorting the words in the Linked Hash Map
+		    //Ascending arrangement of words in arraylist
 		    Collections.sort(
-		    		sorter_array,
+		    		words_arranger_array,
 		            new Comparator<Map.Entry<String, Integer> >() {
-		                // Comparing two entries by value
+		                // value based comparison of 2 elements
 		                public int compare(
 		                    Map.Entry<String, Integer> entry1,
 		                    Map.Entry<String, Integer> entry2)
 		                {
 		 
-		                    // Subtracting the entries
+		                    //Arrnaging the atomic elements
 		                    return entry1.getValue()
 		                        - entry2.getValue();
 		                }
 		            });
 		    
-		    int display_counter = 1;
-		    for (Map.Entry<String, Integer> item : sorter_array) {
+		    int suggestor_threshold = 1;
+		    for (Map.Entry<String, Integer> item : words_arranger_array) {
 		    	 
-	            // Printing the sorted map till the threshold value
-	            System.out.println(display_counter+" "+item.getKey()+" "+item.getValue());
+	            // Suggesting until the set threshold
+	            System.out.println(suggestor_threshold+" "+item.getKey()+" "+item.getValue());
 	            
-	            display_counter++;
-	            if(display_counter==threshold_val)
+	            suggestor_threshold++;
+	            if(suggestor_threshold==threshold_val)
 	            	break;
 	        }
 		    
