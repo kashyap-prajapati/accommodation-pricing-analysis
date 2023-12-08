@@ -35,6 +35,8 @@ public class Hotel {
 	private String toDate;
 	private String overView;
 	private String address;
+	private String imageUrl;
+	private String source;
 	private List<String> amenities;
 	private List<String> allAmenities;
 
@@ -189,6 +191,22 @@ public class Hotel {
 
 	public void setOverView(String overView) {
 		this.overView = overView;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}	
 	
 	

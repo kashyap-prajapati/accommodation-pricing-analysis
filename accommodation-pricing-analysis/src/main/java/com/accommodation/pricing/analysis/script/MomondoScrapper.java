@@ -55,6 +55,7 @@ public class MomondoScrapper extends MomondoPageObject {
 	private static final String DESCRIPTION_CLASS = ".FLpo-score-description";
 	private static final String SCORE_CLASS = ".FLpo-score";
 	private static final String REVIEW_COUNT_CLASS=".FLpo-review-count";
+	private static final String IMAGE_URL_CLASS=".e9fk-photo";
 	private static final String HREF="href";
 	private static final String NOT_FOUND = "not found";
 
@@ -248,6 +249,8 @@ public class MomondoScrapper extends MomondoPageObject {
 					String score =  HtmlUtil.getFirstElementText(document, SCORE_CLASS);
 					String reviewCount =  HtmlUtil.getFirstElementText(document, REVIEW_COUNT_CLASS);
 					String url = hotelNameLinkList.get(page).getAttribute(HREF);
+					String imageUrl = HtmlUtil.select(document, IMAGE_URL_CLASS).get(0).attr("src");
+					String source = (type == 1 ? "Kayak" : "Momondo");
 				    hotelNameLinkList.get(hotelIndex).click();
 				    
 				    ArrayList<String> tabs = new ArrayList<>(driver.getDriver().getWindowHandles());
@@ -299,6 +302,8 @@ public class MomondoScrapper extends MomondoPageObject {
 				    hotel.setAddress(address);
 				    hotel.setAmenities(amenitiesList);
 				    hotel.setAllAmenities(allAmenitiesList);
+				    hotel.setImageUrl(imageUrl);
+				    hotel.setSource(source);
 				    hotelRepository.save(hotel);
 				}catch (Exception e) {
 					e.printStackTrace();

@@ -19,6 +19,7 @@ import com.accommodation.pricing.analysis.feignclient.ApiFeignClient;
 import com.accommodation.pricing.analysis.feignclient.VerboFeignClient;
 import com.accommodation.pricing.analysis.model.Hotel;
 import com.accommodation.pricing.analysis.model.LocationSearch;
+import com.accommodation.pricing.analysis.model.SearchData;
 import com.accommodation.pricing.analysis.model.VerboSearch;
 import com.accommodation.pricing.analysis.model.VerboSearch.HotwireSuggestion;
 import com.accommodation.pricing.analysis.repository.HotelRepository;
@@ -183,6 +184,34 @@ public class ApiService {
 		PageRanking pageRanking = new PageRanking();
 		pageRanking.implementPageRank(hotelList);
 	}
+	
+	public List<Hotel> getHotelsBySearchKeyword(SearchData searchData){
+		String keyword=searchData.getKeyword();
+		
+		if(keyword!=null && !keyword.isEmpty() && searchData.getFromDate()!=null && !searchData.getKeyword().isEmpty()
+				&& searchData.getToDate()!=null && !searchData.getToDate().isEmpty()) {
+			return hotelRepository.getHotelByKeywordAndDate(
+					keyword, keyword, keyword, keyword, keyword,
+					keyword, keyword, keyword, keyword, keyword, 
+					searchData.getFromDate(), searchData.getToDate());
+		}
+		
+		if(keyword!=null && !keyword.isEmpty()) {
+			return hotelRepository.getHotelsBySearchKeyword(keyword,keyword,keyword,keyword,keyword,
+					keyword,keyword,keyword,keyword,keyword);
+		}
+		
+		if(searchData.getFromDate()!=null && !searchData.getFromDate().isEmpty() && searchData.getToDate()!=null && !searchData.getToDate().isEmpty()) {
+			return hotelRepository.getHotelsByDate(searchData.getFromDate(), searchData.getToDate());
+		}
+		
+		return new ArrayList<>();
+		
+	}
+	
+	
+	
+	
 	
 
 }
